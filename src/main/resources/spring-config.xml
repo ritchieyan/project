@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/data/jpa 
+		http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- Activates annotation-based bean configuration -->
+	<context:annotation-config />
+	
+	<!-- Scans for application @Components to deploy -->
+	<context:component-scan base-package="com.wyrz" >
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<!-- 数据库配置文件位置 -->
+	<context:property-placeholder location="classpath:/jdbc.properties" />
+	
+	<!-- 配置只写dbcp数据源 -->
+	<bean id="dataSourceWrite" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.write.driverClassName}" />
+		<property name="url" value="${jdbc.write.url}" />
+		<property name="username" value="${jdbc.write.username}" />
+		<property name="password" value="${jdbc.write.password}" />
+		<property name="minIdle" value="2" />        <!-- 队列中的最小等待数 -->
+		<property name="maxIdle" value="5" />        <!-- 队列中的最大等待数 -->
+		<property name="maxWait" value="1000" />        <!-- 最长等待时间，单位毫秒 -->
+		<property name="maxActive" value="30" />    <!-- 最大活跃数 -->
+		<property name="initialSize" value="1" /><!-- 初始大小 -->
+		<property name="logAbandoned" value="true"/>
+		<property name="validationQuery" value="SELECT 1 FROM DUAL"/>
+		<property name="testOnBorrow" value="true"/>
+		<property name="testOnReturn" value="true"/>
+		<property name="testWhileIdle" value="true"/>
+	</bean>
+	
+	<!-- 配置只读dbcp数据源 -->
+	<bean id="dataSourceRead" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.write.driverClassName}" />
+		<property name="url" value="${jdbc.write.url}" />
+		<property name="username" value="${jdbc.write.username}" />
+		<property name="password" value="${jdbc.write.password}" />
+		<property name="minIdle" value="20" />        <!-- 队列中的最小等待数 -->
+		<property name="maxIdle" value="50" />        <!-- 队列中的最大等待数 -->
+		<property name="maxWait" value="1000" />        <!-- 最长等待时间，单位毫秒 -->
+		<property name="maxActive" value="300" />    <!-- 最大活跃数 -->
+		<property name="initialSize" value="10" /><!-- 初始大小 -->
+		<property name="logAbandoned" value="true"/>
+		<property name="validationQuery" value="SELECT 1 FROM DUAL"/>
+		<property name="testOnBorrow" value="true"/>
+		<property name="testOnReturn" value="true"/>
+		<property name="testWhileIdle" value="true"/>
+	</bean>
+	
+	<!-- 可写的SessionFactory sqlWriteSessionFactory -->
+	<bean id="sqlWriteSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
+		<property name="dataSource" ref="dataSourceWrite" />
+		<property name="configLocation" value="classpath:sqlMapConfig.xml" />
+		<property name="mapperLocations" value="classpath:mapper/mysql/**/*Mapper.xml"></property>
+	</bean>
+
+	<!-- 只读的SessionFactory sqlReadOnlySessionFactory -->
+	<bean id="sqlReadOnlySessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
+		<property name="dataSource" ref="dataSourceRead" />
+		<property name="configLocation" value="classpath:sqlMapConfig.xml" />
+		<property name="mapperLocations" value="classpath:mapper/mysql/**/*Mapper.xml"></property>
+	</bean>
+	
+	<!-- 使用JDBC事物 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceWrite" />
+		<property name="globalRollbackOnParticipationFailure" value="false"></property>
+	</bean>
+
+	<!-- 使用annotation注解方式配置事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 配置SQLSession模板 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlWriteSessionFactory" />
+	</bean>
+	
+	<import resource="classpath:spring-mvc.xml"/>
+</beans>

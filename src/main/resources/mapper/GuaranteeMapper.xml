@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyrz.shop.demain.Guarantee">
+	
+	<sql id="Base_Column_List">
+		USER_ID as userId,
+		USER_LOGIN_NAME as userLoginName,
+		USER_PASSWORD as userPassword,
+		USER_NAME_ABBR as userNameAbbr,
+		USER_NAME as userName,
+		USER_SEX as userSex,
+		USER_PHONE as userPhone,
+		USER_EMAIL as userEmail,
+		USER_IMAGE_URL as userImageUrl,
+		USER_ORDER as userOrder,
+		USER_STATE as userState,
+		USER_CODE as userCode,
+		user_create_date as userCreateDate,
+		user_last_login_time as userLastLoginTime,
+		user_last_login_ip as userLastLoginIp
+	</sql>
+
+	<resultMap id="BaseResultMap" type="com.viathink.sys.domain.vo.SysUserVo">
+		<id column="USER_ID" property="userId"/>
+		<result column="USER_EMAIL" property="userEmail"/>
+		<result column="USER_LOGIN_NAME" property="userLoginName"/>
+		<result column="USER_NAME_ABBR" property="userNameAbbr"/>
+		<result column="USER_PHONE" property="userPhone"/>
+		<result column="USER_CODE" property="userCode"/>
+		<result column="user_last_login_time" property="userLastLoginTime"/>
+		<result column="USER_PASSWORD" property="userPassword"/>
+		<result column="USER_STATE" property="userState"/>
+		<result column="USER_SEX" property="userSex"/>
+		<result column="USER_ORDER" property="userOrder"/>
+		<result column="user_create_date" property="userCreateDate"/>
+		<result column="USER_NAME" property="userName"/>
+		<result column="user_last_login_ip" property="userLastLoginIp"/>
+		<result column="USER_IMAGE_URL" property="userImageUrl"/>
+	</resultMap>
+
+
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="userId != null and userId != '' "> and USER_ID = #{userId}</if>
+				<if test="userLoginName != null and userLoginName != '' "> and USER_LOGIN_NAME = #{userLoginName}</if>
+				<if test="userPassword != null and userPassword != '' "> and USER_PASSWORD = #{userPassword}</if>
+				<if test="userNameAbbr != null and userNameAbbr != '' "> and USER_NAME_ABBR = #{userNameAbbr}</if>
+				<if test="userName != null and userName != '' "> and USER_NAME = #{userName}</if>
+				<if test="userSex != null and userSex != '' "> and USER_SEX = #{userSex}</if>
+				<if test="userPhone != null and userPhone != '' "> and USER_PHONE = #{userPhone}</if>
+				<if test="userEmail != null and userEmail != '' "> and USER_EMAIL = #{userEmail}</if>
+				<if test="userImageUrl != null and userImageUrl != '' "> and USER_IMAGE_URL = #{userImageUrl}</if>
+				<if test="userOrder != null and userOrder != '' "> and USER_ORDER = #{userOrder}</if>
+				<if test="userState != null and userState != '' "> and USER_STATE = #{userState}</if>
+				<if test="userCode != null and userCode != '' "> and USER_CODE = #{userCode}</if>
+				<if test="userCreateDate != null">(user_create_date is not null and date_format(user_create_date,'%Y-%m-%d') = date_format(#{userCreateDate},'%Y-%m-%d'))</if>
+				<if test="userLastLoginTime != null">(user_last_login_time is not null and date_format(user_last_login_time,'%Y-%m-%d') = date_format(#{userLastLoginTime},'%Y-%m-%d'))</if>
+				<if test="userLastLoginIp != null and userLastLoginIp != '' "> and user_last_login_ip = #{userLastLoginIp}</if>
+
+				<if test="userIdLike != null and userIdLike !='' ">and USER_ID like CONCAT("%",#{userIdLike},"%")</if>
+				<if test="userLoginNameLike != null and userLoginNameLike !='' ">and USER_LOGIN_NAME like CONCAT("%",#{userLoginNameLike},"%")</if>
+				<if test="userPasswordLike != null and userPasswordLike !='' ">and USER_PASSWORD like CONCAT("%",#{userPasswordLike},"%")</if>
+				<if test="userNameAbbrLike != null and userNameAbbrLike !='' ">and USER_NAME_ABBR like CONCAT("%",#{userNameAbbrLike},"%")</if>
+				<if test="userNameLike != null and userNameLike !='' ">and USER_NAME like CONCAT("%",#{userNameLike},"%")</if>
+				<if test="userSexLike != null and userSexLike !='' ">and USER_SEX like CONCAT("%",#{userSexLike},"%")</if>
+				<if test="userPhoneLike != null and userPhoneLike !='' ">and USER_PHONE like CONCAT("%",#{userPhoneLike},"%")</if>
+				<if test="userEmailLike != null and userEmailLike !='' ">and USER_EMAIL like CONCAT("%",#{userEmailLike},"%")</if>
+				<if test="userImageUrlLike != null and userImageUrlLike !='' ">and USER_IMAGE_URL like CONCAT("%",#{userImageUrlLike},"%")</if>
+				<if test="userOrderLike != null and userOrderLike !='' ">and USER_ORDER like CONCAT("%",#{userOrderLike},"%")</if>
+				<if test="userStateLike != null and userStateLike !='' ">and USER_STATE like CONCAT("%",#{userStateLike},"%")</if>
+				<if test="userCodeLike != null and userCodeLike !='' ">and USER_CODE like CONCAT("%",#{userCodeLike},"%")</if>
+				<if test="sUserCreateDate != null"> and (user_create_date is not null and date_format(user_create_date,'%Y-%m-%d') >= date_format(#{sUserCreateDate},'%Y-%m-%d'))</if>
+				<if test="eUserCreateDate != null"> and (user_create_date is not null and date_format(#{eUserCreateDate},'%Y-%m-%d') >= date_format(user_create_date,'%Y-%m-%d'))</if>
+				<if test="sUserLastLoginTime != null"> and (user_last_login_time is not null and date_format(user_last_login_time,'%Y-%m-%d') >= date_format(#{sUserLastLoginTime},'%Y-%m-%d'))</if>
+				<if test="eUserLastLoginTime != null"> and (user_last_login_time is not null and date_format(#{eUserLastLoginTime},'%Y-%m-%d') >= date_format(user_last_login_time,'%Y-%m-%d'))</if>
+				<if test="userLastLoginIpLike != null and userLastLoginIpLike != '' ">and user_last_login_ip like CONCAT("%",#{userLastLoginIpLike},"%")</if>
+				
+				
+				<if test="userLoginNameList !=null and userLoginNameList.size() > 0">
+					and USER_LOGIN_NAME in
+					<foreach collection="userLoginNameList" item="userLoginName" open="(" separator="," close=")">
+						#{userLoginName}
+					</foreach>
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+	<sql id="Base_limit_Clause">
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</sql>
+
+	<sql id="Base_OrderBy_Clause">
+		<if test="sorting != null">
+			order by ${sorting}
+		</if>
+	</sql>
+
+	<select id="selectCount" resultType="long" parameterType="map">
+		SELECT 
+ 			COUNT(*) 
+ 		FROM 
+ 		SYS_USER 
+		<include refid="Base_Where_Clause" />
+	</select>
+
+	<select id="select" resultMap="BaseResultMap" parameterType="map">
+		SELECT 
+		<include refid="Base_Column_List" /> 
+		FROM SYS_USER 
+		<include refid="Base_Where_Clause" />
+		<include refid="Base_OrderBy_Clause" />
+		<include refid="Base_limit_Clause" />
+	</select>
+
+	<select id="selectById" resultMap="BaseResultMap" parameterType="string">
+		SELECT 
+		<include refid="Base_Column_List" /> 
+		FROM SYS_USER 
+		WHERE USER_ID = #{userId}
+	</select>
+
+	<select id="selectByIdList" resultMap="BaseResultMap" parameterType="list">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM SYS_USER WHERE USER_ID IN
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+
+	<select id="selectExistsIdList" resultType="string" parameterType="list">
+		SELECT USER_ID FROM SYS_USER WHERE USER_ID IN
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+
+	<select id="selectAllId" resultType="string">
+		SELECT USER_ID FROM SYS_USER ORDER BY USER_ID
+	</select>
+
+	<select id="selectIdList" resultType="string" parameterType="map">
+		SELECT USER_ID FROM SYS_USER 
+		<include refid="Base_Where_Clause" /> 
+		ORDER BY USER_ID
+	</select>
+
+	<insert id="insert" parameterType="com.viathink.sys.domain.SysUser">
+		INSERT INTO SYS_USER ( 
+ 			USER_ID,
+			USER_LOGIN_NAME,
+			USER_PASSWORD,
+			USER_NAME_ABBR,
+			USER_NAME,
+			USER_SEX,
+			USER_PHONE,
+			USER_EMAIL,
+			USER_IMAGE_URL,
+			USER_ORDER,
+			USER_STATE,
+			USER_CODE,
+			USER_CREATE_DATE,
+			USER_LAST_LOGIN_TIME,
+			USER_LAST_LOGIN_IP 
+		)VALUES(
+ 			#{userId},
+			#{userLoginName},
+			#{userPassword},
+			#{userNameAbbr},
+			#{userName},
+			#{userSex},
+			#{userPhone},
+			#{userEmail},
+			#{userImageUrl},
+			#{userOrder},
+			#{userState},
+			#{userCode},
+			NOW(),
+			#{userLastLoginTime},
+			#{userLastLoginIp} 
+		)
+	</insert>
+
+	<update id="updateByIdSelective" parameterType="com.viathink.sys.domain.SysUser">
+		UPDATE SYS_USER 
+		<set> 
+			<if test="userEmail != null">USER_EMAIL = #{userEmail},</if>
+			<if test="userLoginName != null">USER_LOGIN_NAME = #{userLoginName},</if>
+			<if test="userNameAbbr != null">USER_NAME_ABBR = #{userNameAbbr},</if>
+			<if test="userPhone != null">USER_PHONE = #{userPhone},</if>
+			<if test="userCode != null">USER_CODE = #{userCode},</if>
+			<if test="userLastLoginTime != null">user_last_login_time = #{userLastLoginTime},</if>
+			<if test="userPassword != null">USER_PASSWORD = #{userPassword},</if>
+			<if test="userState != null">USER_STATE = #{userState},</if>
+			<if test="userSex != null">USER_SEX = #{userSex},</if>
+			<if test="userOrder != null">USER_ORDER = #{userOrder},</if>
+			<if test="userName != null">USER_NAME = #{userName},</if>
+			<if test="userLastLoginIp != null">user_last_login_ip = #{userLastLoginIp},</if>
+			<if test="userImageUrl != null">USER_IMAGE_URL = #{userImageUrl},</if>
+		</set> 
+		WHERE USER_ID = #{userId}
+	</update>
+
+	<update id="updateById" parameterType="com.viathink.sys.domain.SysUser">
+		UPDATE SYS_USER 
+		<set> 
+			USER_EMAIL = #{userEmail},
+			USER_LOGIN_NAME = #{userLoginName},
+			USER_NAME_ABBR = #{userNameAbbr},
+			USER_PHONE = #{userPhone},
+			USER_CODE = #{userCode},
+			user_last_login_time = #{userLastLoginTime},
+			USER_PASSWORD = #{userPassword},
+			USER_STATE = #{userState},
+			USER_SEX = #{userSex},
+			USER_ORDER = #{userOrder},
+			USER_NAME = #{userName},
+			user_last_login_ip = #{userLastLoginIp},
+			USER_IMAGE_URL = #{userImageUrl}, 
+		</set> 
+		WHERE USER_ID = #{userId}
+	</update>
+
+	<delete id="delete" parameterType="map">
+		DELETE FROM SYS_USER 
+		<include refid="Base_Where_Clause" />
+	</delete>
+
+	<delete id="deleteById" parameterType="map">
+		DELETE FROM SYS_USER WHERE USER_ID = #{userId}
+	</delete>
+
+</mapper>
