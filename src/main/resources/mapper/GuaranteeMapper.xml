@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wyrz.shop.demain.Guarantee">
+<mapper namespace="com.wyrz.shop.domain.Guarantee">
 	
 	<sql id="Base_Column_List">
 		GUARANTEE_ID as guaranteeId,
@@ -58,7 +58,7 @@
 		<include refid="Base_limit_Clause" />
 	</select>
 
-	<select id="selectById" resultMap="BaseResultMap" parameterType="string">
+	<select id="selectById" resultMap="BaseResultMap" parameterType="Integer">
 		SELECT 
 		<include refid="Base_Column_List" /> 
 		FROM GUARANTEE 
@@ -106,7 +106,7 @@
 		WHERE GUARANTEE_ID = #{guaranteeId}
 	</update>
 
-	<update id="updateById" parameterType="com.viathink.sys.domain.SysUser">
+	<update id="updateById" parameterType="com.wyrz.shop.domain.Guarantee">
 		UPDATE GUARANTEE 
 		<set> 
 			GUARANTEE_ID = #{guaranteeId},

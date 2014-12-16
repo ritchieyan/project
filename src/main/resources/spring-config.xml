@@ -68,14 +68,14 @@
 	<bean id="sqlWriteSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
 		<property name="dataSource" ref="dataSourceWrite" />
 		<property name="configLocation" value="classpath:sqlMapConfig.xml" />
-		<property name="mapperLocations" value="classpath:mapper/mysql/**/*Mapper.xml"></property>
+		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"></property>
 	</bean>
 
 	<!-- 只读的SessionFactory sqlReadOnlySessionFactory -->
 	<bean id="sqlReadOnlySessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
 		<property name="dataSource" ref="dataSourceRead" />
 		<property name="configLocation" value="classpath:sqlMapConfig.xml" />
-		<property name="mapperLocations" value="classpath:mapper/mysql/**/*Mapper.xml"></property>
+		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"></property>
 	</bean>
 	
 	<!-- 使用JDBC事物 -->
@@ -87,9 +87,13 @@
 	<!-- 使用annotation注解方式配置事务 -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<!-- 配置SQLSession模板 -->
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	<!-- 配置可写SQLSession -->
+	<bean id="writableSQLSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlWriteSessionFactory" />
+	</bean>
+	<!-- 配置只读SQLSession -->
+	<bean id="readonlySQLSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlReadOnlySessionFactory" />
 	</bean>
 	
 	<import resource="classpath:spring-mvc.xml"/>

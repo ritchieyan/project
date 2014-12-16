@@ -9,5 +9,7 @@
 		<setting name="defaultExecutorType" value="REUSE" />
 		<setting name="defaultStatementTimeout" value="25000" />
 	</settings>
-	
+	<mappers>
+		<package name="com.wyrz.shop.mapper"/>
+	</mappers>
 </configuration>
