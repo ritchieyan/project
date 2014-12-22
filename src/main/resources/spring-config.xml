@@ -15,7 +15,7 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/context 
-		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd" >
 
 	<!-- Activates annotation-based bean configuration -->
 	<context:annotation-config />
@@ -68,14 +68,14 @@
 	<bean id="sqlWriteSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
 		<property name="dataSource" ref="dataSourceWrite" />
 		<property name="configLocation" value="classpath:sqlMapConfig.xml" />
-		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"></property>
+<!-- 		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"></property> -->
 	</bean>
 
 	<!-- 只读的SessionFactory sqlReadOnlySessionFactory -->
 	<bean id="sqlReadOnlySessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
 		<property name="dataSource" ref="dataSourceRead" />
 		<property name="configLocation" value="classpath:sqlMapConfig.xml" />
-		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"></property>
+<!-- 		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"></property> -->
 	</bean>
 	
 	<!-- 使用JDBC事物 -->

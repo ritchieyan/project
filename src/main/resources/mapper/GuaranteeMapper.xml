@@ -37,7 +37,7 @@
 
 	<sql id="Base_OrderBy_Clause">
 		<if test="sorting != null">
-			order by ${sorting}
+			order by #{sorting}
 		</if>
 	</sql>
 

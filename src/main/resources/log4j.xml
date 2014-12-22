@@ -42,7 +42,7 @@
 	<!-- 打印sql -->
 	<!-- 输出SQL语句 -->
 	<logger name="jdbc.sqlonly" additivity="false">
-		<level value="error"></level>
+		<level value="debug"></level>
 		<appender-ref ref="stdout" />
 		<appender-ref ref="fileOut"/>
 	</logger>
